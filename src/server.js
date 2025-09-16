@@ -35,5 +35,5 @@ app.get("/", (req, res) => {
   res.send("🚀 Servidor funcionando. Usa /auth, /tasks o /api/data para probar la API.");
 });
 
-
 module.exports = app;
+module.exports.handler = (req, res) => app(req, res);
