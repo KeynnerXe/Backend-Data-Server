@@ -3,6 +3,7 @@ const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
 const configurePassport = require("./config/passport");
+const path = require('path');
 
 const authRoutes = require("./routes/auth.routes");
 const taskRoutes = require("./routes/task.routes");
@@ -23,6 +24,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 configurePassport(passport);
+
+// Middleware para servir archivos estáticos desde la carpeta public
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Rutas
 app.use("/auth", authRoutes);
