@@ -1,7 +1,10 @@
 const express = require("express");
-const { receiveData } = require("../controllers/data.controller");
 const router = express.Router();
 
-router.post("/", receiveData);
+router.post("/", async (req, res) => {
+  const datos = req.body;
+  // Aquí puedes procesar o guardar los datos como necesites
+  res.json({ mensaje: "Datos recibidos correctamente", datos });
+});
 
 module.exports = router;
