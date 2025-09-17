@@ -3,8 +3,9 @@ const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
 const path = require("path");
-
+const dashboardRoutes = require("./routes/dashboard.routes");
 const configurePassport = require("./config/passport");
+
 
 // Importar rutas
 const authRoutes = require("./routes/auth.routes");
@@ -16,7 +17,9 @@ const prisma = require("./config/prisma");
 
 const app = express();
 
-app.use(cors());
+//app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
+
 app.use(express.json());
 app.use(
   session({
@@ -37,6 +40,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/api/data", dataRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Servidor funcionando. Usa /auth, /tasks o /api/data para probar la API.");
