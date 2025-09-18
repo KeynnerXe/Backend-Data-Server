@@ -43,7 +43,7 @@ app.use("/api/data", dataRoutes);
 app.use("/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
-  res.send("🚀 Servidor funcionando. Usa /auth, /tasks o /api/data para probar la API.");
+  res.send("Servidor funcionando.");
 });
 
 // Manejo global de errores
