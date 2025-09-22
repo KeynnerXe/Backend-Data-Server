@@ -6,8 +6,8 @@
     "dev": "node src/server.js",
     "start": "node src/server.js",
     "postinstall": "prisma generate",
-    "build": "echo 'no build step'",
-    "vercel-build": "prisma generate && npm run build"
+    "build": "prisma generate && echo 'no build step'",
+    "vercel-build": "npm run build"
   },
   "keywords": [],
   "author": "",

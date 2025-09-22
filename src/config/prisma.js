@@ -1,9 +1,18 @@
-import { execSync } from "child_process";
-const { PrismaClient } = require('@prisma/client');
+const { execSync } = require("child_process");
+
+try {
+  // Generar Prisma Client al vuelo
+  execSync("npx prisma generate", { stdio: "inherit" });
+  console.log("✅ Prisma Client generado al vuelo");
+} catch (e) {
+  console.warn("⚠️ No se pudo ejecutar prisma generate al vuelo:", e.message);
+}
+
+const { PrismaClient } = require("@prisma/client");
 
 let prisma;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient();
 } else {
   if (!global.prisma) {
