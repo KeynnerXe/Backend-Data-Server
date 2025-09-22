@@ -1,3 +1,4 @@
+import { execSync } from "child_process";
 const { PrismaClient } = require('@prisma/client');
 
 let prisma;
@@ -12,17 +13,3 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = prisma;
-
-/* const { PrismaClient } = require('@prisma/client');
-
-let prisma;
-
-if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient();
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
-  prisma = global.prisma;
-}
-module.exports = prisma; */
