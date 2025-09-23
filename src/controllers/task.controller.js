@@ -1,9 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+// src/controllers/task.controller.js
+import { getPrisma } from "../config/prisma.js";
 
 export const createTask = async (req, res) => {
+  const prisma = getPrisma(); // inicializa Prisma en runtime
   const { title } = req.body;
+
   try {
     const task = await prisma.task.create({
       data: { title, userId: req.user?.id || null },
@@ -15,8 +16,13 @@ export const createTask = async (req, res) => {
 };
 
 export const getTasks = async (req, res) => {
-  const tasks = await prisma.task.findMany({
-    where: { userId: req.user?.id },
-  });
-  res.json(tasks);
+  const prisma = getPrisma();
+  try {
+    const tasks = await prisma.task.findMany({
+      where: { userId: req.user?.id },
+    });
+    res.json(tasks);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };

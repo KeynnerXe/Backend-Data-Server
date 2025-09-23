@@ -1,8 +1,10 @@
 import bcrypt from "bcrypt";
-import prisma from "../config/prisma.js";
+import { getPrisma } from "../config/prisma.js";
 
 export const register = async (req, res) => {
+  const prisma = getPrisma(); // inicializa Prisma en runtime
   const { email, password } = req.body;
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
