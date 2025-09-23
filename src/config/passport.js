@@ -1,9 +1,8 @@
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
-import { getPrisma } from "./prisma.js";
+import prisma from "./prisma.js"; // importamos la instancia directamente
 
 function configurePassport(passport) {
-  const prisma = getPrisma(); // inicializa Prisma en runtime
 
   passport.use(
     new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
