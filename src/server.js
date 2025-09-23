@@ -1,3 +1,4 @@
+// src/server.js
 import express from "express";
 import session from "express-session";
 import passport from "passport";
@@ -10,12 +11,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Config y rutas
+import { getPrisma } from "./config/prisma.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/auth.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import dataRoutes from "./routes/data.routes.js";
-import prisma from "./config/prisma.js";
+
+// Inicializa Prisma en runtime
+const prisma = getPrisma();
 
 const app = express();
 
