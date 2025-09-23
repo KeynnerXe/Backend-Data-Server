@@ -1,22 +1,36 @@
+import prisma from "../config/prisma.js";
 import bcrypt from "bcrypt";
-import { getPrisma } from "../config/prisma.js";
 
-export const register = async (req, res) => {
-  const prisma = getPrisma(); // inicializa Prisma en runtime
-  const { email, password } = req.body;
-
+// Registro de usuario
+export const registerUser = async (req, res) => {
   try {
+    const { email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await prisma.user.create({
       data: { email, password: hashedPassword },
     });
-    res.json(user);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+
+    res.json({ message: "Usuario registrado", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al registrar usuario" });
   }
 };
 
-export const profile = (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "No autenticado" });
-  res.json({ user: req.user });
+// Login (opcional si no usas passport directamente)
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) return res.status(401).json({ error: "Contraseña incorrecta" });
+
+    res.json({ message: "Login exitoso", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al hacer login" });
+  }
 };
