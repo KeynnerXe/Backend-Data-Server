@@ -34,14 +34,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 configurePassport(passport);
 
-// 👇 Middleware para evitar errores Range
-app.use((req, res, next) => {
-  res.setHeader("Accept-Ranges", "none");
-  next();
-});
-
-// Servir archivos estáticos
-app.use(express.static(path.join(__dirname, "../public")));
+// ✅ Servir archivos estáticos sin aceptar Range
+app.use(
+  express.static(path.join(__dirname, "../public"), {
+    acceptRanges: false, // 👈 aquí está la corrección
+  })
+);
 
 // Rutas
 app.use("/auth", authRoutes);
@@ -61,6 +59,7 @@ app.use((err, req, res, next) => {
     .status(500)
     .json({ error: "Error interno del servidor", details: err.message });
 });
+
 // Exportar app y handler para Vercel
 module.exports = app;
 module.exports.handler = (req, res) => app(req, res);
