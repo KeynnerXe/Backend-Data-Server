@@ -2,10 +2,7 @@
   "version": 2,
   "buildCommand": "npm install && npx prisma generate",
   "outputDirectory": ".",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "src/server.js"
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/src/server.js" }
   ]
 }
