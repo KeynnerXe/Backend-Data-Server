@@ -12,5 +12,5 @@
       "dest": "src/server.js"
     }
   ],
-  "buildCommand": "npx prisma generate"
+  "buildCommand": "npm install && npx prisma generate"
 }
