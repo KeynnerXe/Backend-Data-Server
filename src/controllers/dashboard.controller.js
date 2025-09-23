@@ -1,8 +1,8 @@
 // src/controllers/dashboard.controller.js
-const prisma = require("../config/prisma");
+import prisma from "../config/prisma.js";
 
 // Obtener datos oficiales del dashboard (lectura pública)
-exports.getDashboardData = async (req, res) => {
+export const getDashboardData = async (req, res) => {
   try {
     const data = await prisma.dashboardData.findMany({
       orderBy: { id: "asc" },
@@ -15,10 +15,12 @@ exports.getDashboardData = async (req, res) => {
 };
 
 // Proponer un cambio (puede venir de usuario autenticado o de API key)
-exports.createChange = async (req, res) => {
+export const createChange = async (req, res) => {
   try {
     const { dashboardId, newValue } = req.body;
-    const dashboard = await prisma.dashboardData.findUnique({ where: { id: Number(dashboardId) } });
+    const dashboard = await prisma.dashboardData.findUnique({
+      where: { id: Number(dashboardId) },
+    });
     if (!dashboard) return res.status(404).json({ error: "Dashboard item no encontrado" });
 
     const data = {
@@ -37,7 +39,7 @@ exports.createChange = async (req, res) => {
 };
 
 // Obtener cambios pendientes (solo APPROVER)
-exports.getPendingChanges = async (req, res) => {
+export const getPendingChanges = async (req, res) => {
   try {
     const changes = await prisma.dashboardChange.findMany({
       where: { status: "pending" },
@@ -52,7 +54,7 @@ exports.getPendingChanges = async (req, res) => {
 };
 
 // Aprobar cambio (solo APPROVER)
-exports.approveChange = async (req, res) => {
+export const approveChange = async (req, res) => {
   try {
     const id = Number(req.params.id);
     const change = await prisma.dashboardChange.update({
@@ -73,7 +75,7 @@ exports.approveChange = async (req, res) => {
 };
 
 // Rechazar cambio (solo APPROVER)
-exports.rejectChange = async (req, res) => {
+export const rejectChange = async (req, res) => {
   try {
     const id = Number(req.params.id);
     const change = await prisma.dashboardChange.update({

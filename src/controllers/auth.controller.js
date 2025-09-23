@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
-const prisma = require("../config/prisma");
+import bcrypt from "bcrypt";
+import prisma from "../config/prisma.js";
 
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   const { email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -14,7 +14,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.profile = (req, res) => {
+export const profile = (req, res) => {
   if (!req.user) return res.status(401).json({ error: "No autenticado" });
   res.json({ user: req.user });
 };

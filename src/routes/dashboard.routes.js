@@ -1,9 +1,10 @@
 // src/routes/dashboard.routes.js
-const express = require("express");
+import express from "express";
+import * as dctrl from "../controllers/dashboard.controller.js";
+import { isAuthenticated, hasRole } from "../middlewares/auth.js";
+import requireApiKey from "../middlewares/apikey.js";
+
 const router = express.Router();
-const dctrl = require("../controllers/dashboard.controller");
-const { isAuthenticated, hasRole } = require("../middlewares/auth");
-const requireApiKey = require("../middlewares/apikey");
 
 // Lectura pública del dashboard
 router.get("/", dctrl.getDashboardData);
@@ -25,4 +26,4 @@ router.get("/changes/pending", isAuthenticated, hasRole("APPROVER"), dctrl.getPe
 router.post("/approve/:id", isAuthenticated, hasRole("APPROVER"), dctrl.approveChange);
 router.post("/reject/:id", isAuthenticated, hasRole("APPROVER"), dctrl.rejectChange);
 
-module.exports = router;
+export default router;

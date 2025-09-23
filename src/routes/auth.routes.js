@@ -1,6 +1,7 @@
-const express = require("express");
-const passport = require("passport");
-const { register, profile } = require("../controllers/auth.controller");
+import express from "express";
+import passport from "passport";
+import { register, profile } from "../controllers/auth.controller.js";
+
 const router = express.Router();
 
 router.post("/register", register);
@@ -11,4 +12,4 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
 router.get("/profile", profile);
 
-module.exports = router;
+export default router;

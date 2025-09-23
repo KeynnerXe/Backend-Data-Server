@@ -1,16 +1,21 @@
-const express = require("express");
-const session = require("express-session");
-const passport = require("passport");
-const cors = require("cors");
-const path = require("path");
+import express from "express";
+import session from "express-session";
+import passport from "passport";
+import cors from "cors";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
+// Para reemplazar __dirname en ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Config y rutas
-const dashboardRoutes = require("./routes/dashboard.routes");
-const configurePassport = require("./config/passport");
-const authRoutes = require("./routes/auth.routes");
-const taskRoutes = require("./routes/task.routes");
-const dataRoutes = require("./routes/data.routes");
-const prisma = require("./config/prisma");
+import dashboardRoutes from "./routes/dashboard.routes.js";
+import configurePassport from "./config/passport.js";
+import authRoutes from "./routes/auth.routes.js";
+import taskRoutes from "./routes/task.routes.js";
+import dataRoutes from "./routes/data.routes.js";
+import prisma from "./config/prisma.js";
 
 const app = express();
 
@@ -37,7 +42,7 @@ configurePassport(passport);
 // ✅ Servir archivos estáticos sin aceptar Range
 app.use(
   express.static(path.join(__dirname, "../public"), {
-    acceptRanges: false, // 👈 aquí está la corrección
+    acceptRanges: false,
   })
 );
 
@@ -61,5 +66,5 @@ app.use((err, req, res, next) => {
 });
 
 // Exportar app y handler para Vercel
-module.exports = app;
-module.exports.handler = (req, res) => app(req, res);
+export default app;
+export const handler = (req, res) => app(req, res);

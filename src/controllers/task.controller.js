@@ -1,7 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-exports.createTask = async (req, res) => {
+export const createTask = async (req, res) => {
   const { title } = req.body;
   try {
     const task = await prisma.task.create({
@@ -13,7 +14,9 @@ exports.createTask = async (req, res) => {
   }
 };
 
-exports.getTasks = async (req, res) => {
-  const tasks = await prisma.task.findMany({ where: { userId: req.user?.id } });
+export const getTasks = async (req, res) => {
+  const tasks = await prisma.task.findMany({
+    where: { userId: req.user?.id },
+  });
   res.json(tasks);
 };

@@ -1,4 +1,4 @@
-exports.receiveData = async (req, res) => {
+export const receiveData = async (req, res) => {
   // Recibe datos desde la extensión Qlik y responde
   const data = req.body;
   // Aquí podrías guardar en la base de datos si lo necesitas
