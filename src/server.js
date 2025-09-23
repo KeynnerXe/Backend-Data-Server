@@ -1,4 +1,3 @@
-// src/server.js
 import express from "express";
 import session from "express-session";
 import passport from "passport";
@@ -11,15 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Config y rutas
-import { getPrisma } from "./config/prisma.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import configurePassport from "./config/passport.js";
 import authRoutes from "./routes/auth.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import dataRoutes from "./routes/data.routes.js";
-
-// Inicializa Prisma en runtime
-const prisma = getPrisma();
 
 const app = express();
 
@@ -43,11 +38,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 configurePassport(passport);
 
-// ✅ Servir archivos estáticos sin aceptar Range
+// Archivos estáticos
 app.use(
-  express.static(path.join(__dirname, "../public"), {
-    acceptRanges: false,
-  })
+  express.static(path.join(__dirname, "../public"), { acceptRanges: false })
 );
 
 // Rutas
@@ -69,6 +62,6 @@ app.use((err, req, res, next) => {
     .json({ error: "Error interno del servidor", details: err.message });
 });
 
-// Exportar app y handler para Vercel
+// Export para Vercel
 export default app;
 export const handler = (req, res) => app(req, res);

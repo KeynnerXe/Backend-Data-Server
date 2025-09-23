@@ -1,17 +1,19 @@
 // src/config/prisma.js
 import { PrismaClient } from "@prisma/client";
+import { execSync } from "child_process";
 
-// Instancia global para desarrollo/serverless
 let prisma;
 
 export function getPrisma() {
   if (!prisma) {
-    // ✅ Inicializa Prisma en runtime
+    try {
+      // Forzar generación de Prisma en Vercel serverless
+      execSync("npx prisma generate", { stdio: "inherit" });
+    } catch (e) {
+      console.error("Error generando Prisma:", e);
+    }
     prisma = new PrismaClient();
-
-    // Opcional: log para saber que Prisma se inicializó
     console.log("PrismaClient inicializado ✅");
   }
   return prisma;
 }
-  
