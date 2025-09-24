@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "build": "prisma generate",
+    "build": "npm run generate && echo 'Build terminado'",
+    "generate": "prisma generate",
     "postinstall": "prisma generate"
   },
   "dependencies": {
