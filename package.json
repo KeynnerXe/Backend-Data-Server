@@ -4,28 +4,20 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/server.js",
-    "start": "node src/server.js",
-    "postinstall": "prisma generate",
-    "build": "prisma generate && echo 'no build step'",
-    "vercel-build": "npm run build"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^6.16.1",
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "express-session": "^1.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "passport": "^0.7.0",
-    "passport-local": "^1.0.0",
-    "zod": "^4.1.8"
+    "@prisma/client": "^5.18.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "prisma": "^6.16.1"
-  },
-  "engines": {
-    "node": "22.x"
+    "nodemon": "^3.1.0",
+    "prisma": "^5.18.0"
   }
 }
