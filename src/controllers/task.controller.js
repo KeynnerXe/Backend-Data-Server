@@ -1,4 +1,3 @@
-// src/controllers/task.controller.js
 import { getPrisma } from "../config/prisma.js";
 
 export const createTask = async (req, res) => {

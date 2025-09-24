@@ -38,12 +38,11 @@ export const login = async (req, res) => {
 // Perfil del usuario autenticado
 export const profile = async (req, res) => {
   try {
-    // Asumiendo que tienes `req.user` cargado con el middleware de auth (passport/jwt)
     if (!req.user) return res.status(401).json({ error: "No autenticado" });
 
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      select: { id: true, email: true, createdAt: true }, // evita mandar el password
+      select: { id: true, email: true, createdAt: true }, // nunca expongas la contraseña
     });
 
     res.json({ user });
@@ -52,4 +51,3 @@ export const profile = async (req, res) => {
     res.status(500).json({ error: "Error al obtener perfil" });
   }
 };
-
