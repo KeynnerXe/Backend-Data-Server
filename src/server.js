@@ -57,13 +57,13 @@ app.use((err, req, res, next) => {
 
 // ✅ Export para Vercel y uso local
 export default app;
-export const handler = (req, res) => app(req, res);
+// export const handler = (req, res) => app(req, res);
 
 // ✅ Solo escucha localmente si no estamos en producción
-if (process.env.NODE_ENV !== "production") {
-	const PORT = process.env.PORT || 4000;
-	const HOST = "localhost";
-	app.listen(PORT, HOST, () => {
-		console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
-	});
-}
+// if (process.env.NODE_ENV !== "production") {
+//	const PORT = process.env.PORT || 4000;
+//	const HOST = "localhost";
+//	app.listen(PORT, HOST, () => {
+//		console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
+//	});
+// }
