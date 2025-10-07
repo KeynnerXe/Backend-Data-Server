@@ -1,51 +1,70 @@
 import express from "express";
 import cors from "cors";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
+import dotenv from "dotenv";
 
-// Para reemplazar __dirname en ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+dotenv.config();
+const app = express();
+
+
+// Configuración CORS universal (desarrollo y producción)
+const allowedOrigins = [
+  "http://localhost:3000", // Desarrollo
+  process.env.FRONTEND_URL // Producción (define esta variable en tu entorno)
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permite peticiones sin origen (por ejemplo, desde Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("No permitido por CORS"));
+    }
+  },
+  credentials: true // Permite cookies/autenticación
+}));
+
+app.use(express.json());
 
 // Rutas
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import dataRoutes from "./routes/data.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import providerRoutes from "./routes/provider.routes.js";
 
-const app = express();
-
-// Middleware CORS
-app.use(cors({ origin: true, credentials: true }));
-
-// Middleware JSON
-app.use(express.json());
-
-// Archivos estáticos
-app.use(
-  express.static(path.join(__dirname, "../public"), { acceptRanges: false })
-);
-
-// Rutas
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/api", userRoutes);
+app.use("/api", providerRoutes);
 
-// Ruta base
 app.get("/", (req, res) => {
   res.json({ status: "ok", message: "Servidor funcionando 🚀" });
 });
 
-// Manejo global de errores
+// Middleware global para manejar errores y asegurar respuesta JSON
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    error: "Error interno del servidor",
-    details: err.message,
-  });
+  if (res.headersSent) return next(err);
+  // Si el error es de CORS
+  if (err.message && err.message.includes("CORS")) {
+    return res.status(403).json({ error: "CORS no permitido" });
+  }
+  // Otros errores
+  res.status(500).json({ error: err.message || "Error interno del servidor" });
 });
 
-// Export para Vercel
+// ✅ Export para Vercel y uso local
 export default app;
 export const handler = (req, res) => app(req, res);
+
+// ✅ Solo escucha localmente si no estamos en producción
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 4000;
+  const HOST = "localhost";
+  app.listen(PORT, HOST, () => {
+    console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
+  });
+}

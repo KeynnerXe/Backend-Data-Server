@@ -1,8 +1,0 @@
-{
-  "name": "qlik-writeback_keynner",
-  "description": "Extensión para proponer cambios con Writeback y flujos de aprobación",
-  "type": "visualization",
-  "version": "1.0.0",
-  "author": "Keynner",
-  "icon": "extension"
-}
