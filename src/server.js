@@ -61,7 +61,7 @@
 // });
 
 // // ✅ Export para Vercel y uso local
-// export default app;
+export default app;
 // export const handler = (req, res) => app(req, res);
 
 // // ✅ Solo escucha localmente si no estamos en producción
